@@ -63,8 +63,14 @@ CFLAGS=-I$(IDIR)
 # Scan11: ScanNetwork2.cpp	
 # 		arm-none-eabi-as ScanNetwork2.cpp -o ScanNet -fpermissive -I/usr/include -isysroot/home/jorge/Downloads/
 # 		arduino-1.5.3-Intel.1.0.4/hardware/tools/sysroots/i586-poky-linux-uclibc/usr/include/sys
-Scan12Ubu: ScanNetwork2.cpp
-			g++ -o trfg ScanNetwork2.cpp $(CFLAGS)/edison/libraries/SPI/ $(CFLAGS)/edison/cores/arduino/ $(CFLAGS)/x86/variants/galileo_fab_g/ --sysroot=$(IDIR2) -I/usr/include #-I/home/jorge/Downloads/arduino-1.5.3-Intel.1.0.4/hardware/tools/sysroots/i586-poky-linux-uclibc/usr/include/sys/
+
+# Scan12Ubu: ScanNetwork2.cpp
+# 			g++ -o trfg ScanNetwork2.cpp $(CFLAGS)/edison/libraries/SPI/ $(CFLAGS)/edison/cores/arduino/ $(CFLAGS)/x86/variants/galileo_fab_g/ --sysroot=$(IDIR2) -I/usr/include -I/usr/arm-linux-gnueabi/include/asm-generic/
+
+# Scan13Ubu: ScanNetwork2.cpp
+# 			arm-linux-gnueabihf-g++ -o trfg ScanNetwork2.cpp $(CFLAGS)/edison/libraries/SPI/ $(CFLAGS)/edison/cores/arduino/ $(CFLAGS)/x86/variants/galileo_fab_g/ --sysroot=$(IDIR2) -I/usr/include #-I/home/jorge/Downloads/arduino-1.5.3-Intel.1.0.4/hardware/tools/sysroots/i586-poky-linux-uclibc/usr/include/sys/
+Scan14Ubu: WiFi.cpp
+			g++ -o algunos WiFi.cpp -Wformat-extra-args -fpermissive -I. $(CFLAGS)/edison/cores/arduino/ $(CFLAGS)/x86/variants/galileo_fab_g/ -lm
 
 # Hola: HolaMundo.cpp 
-# 		arm-none-eabi-cpp HolaMundo.cpp -o borrar 
+# 		arm-linux-gnueabihf-g++ HolaMundo.cpp -o borrar 

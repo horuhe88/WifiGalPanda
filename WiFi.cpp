@@ -1,6 +1,6 @@
 /* WiFi library that uses the Intel Centrino N-135 wireless */
 #include "WiFi.h"
-#include "trace.h"
+#include <trace.h>
 extern "C" {
   #include "utility/wl_definitions.h"
   #include "utility/n135.h"
@@ -23,7 +23,7 @@ WiFiClass::WiFiClass()
 	init();
 }
 
-/*uint8_t WiFiClass::getEncrBySsid(int count, char * ssid)
+uint8_t WiFiClass::getEncrBySsid(int count, char * ssid)
 {
 	for (int i = 0; i < count; i++ ) {
 		//trace_debug("checking ssid %s against %s", _networkSsid[i], ssid);
@@ -34,7 +34,7 @@ WiFiClass::WiFiClass()
 	}
 	return 0;
 }
-*/
+
 uint8_t WiFiClass::getEncrType(char * encr)
 {
 	/* TODO finish this for other security */
@@ -48,7 +48,7 @@ uint8_t WiFiClass::getEncrType(char * encr)
 		return ENC_TYPE_NONE;
 }
 
-/*IPAddress WiFiClass::getLocalIP()
+IPAddress WiFiClass::getLocalIP()
 {
 	FILE *fp = NULL;
 	char cmd[128];
@@ -62,7 +62,7 @@ uint8_t WiFiClass::getEncrType(char * encr)
 		trace_error("can't open handle to %s", TMP_PATH);
 		return ip;
 	}
-	fscanf(fp, "%s", cmd); /* inet addr /
+	fscanf(fp, "%s", cmd); /* inet addr */
 	fclose(fp);
 	trace_debug("my IP=%s", cmd);
 	if(isdigit(cmd[0])) {
@@ -95,7 +95,7 @@ IPAddress WiFiClass::getSubnet()
 		trace_error("can't open handle to %s", TMP_PATH);
 		return ip;
 	}
-	fscanf(fp, "%s", cmd); /* Mask /
+	fscanf(fp, "%s", cmd); /* Mask */
 	fclose(fp);
 	trace_debug("my IP=%s", cmd);
 
@@ -110,15 +110,15 @@ IPAddress WiFiClass::getSubnet()
 		(ip._sin.sin_addr.s_addr&0x00FF0000)>>16,
 		(ip._sin.sin_addr.s_addr&0xFF000000)>>24);
 	return ip;
-}*/
+}
 
-/*void WiFiClass::init()
+void WiFiClass::init()
 {
 	FILE *fp = NULL;
 	char cmd[50];
 	trace_debug("init");
 
-	/* start as if we have no hw /
+	/* start as if we have no hw */
 	_status = WL_NO_SHIELD;
 	sprintf(cmd, "ls /sys/class/net/ | grep %s > %s", ARDUINO_WLAN, TMP_PATH);
 	system(cmd);
@@ -133,15 +133,15 @@ IPAddress WiFiClass::getSubnet()
 		trace_debug("found %s", ARDUINO_WLAN);
 		sprintf(cmd, "systemctl restart wpa_supplicant");
 		system(cmd);
-		/* satisfy Arduino sketches that user this lib /
+		/* satisfy Arduino sketches that user this lib */
 		strcpy(fwVersion, "1.1.0");
-		 ensure we are not already up from previous sketch 
-		/* start from a known good /
+		/* ensure we are not already up from previous sketch */
+		/* start from a known good */
 		sprintf(cmd, "ifconfig %s down", ARDUINO_WLAN);
 		system(cmd);
 		delay(3000);
 
-		/* needs to be up to do a scan /
+		/* needs to be up to do a scan */
 		trace_debug("ifconfig %s up", ARDUINO_WLAN);
 		sprintf(cmd, "ifconfig %s up", ARDUINO_WLAN);
 		system(cmd);
@@ -170,9 +170,9 @@ char* WiFiClass::firmwareVersion()
 {
 	trace_debug("firmwareVersion");
 	return fwVersion;
-}*/
+}
 
-/*int WiFiClass::begin(char* ssid)
+int WiFiClass::begin(char* ssid)
 {
 	char cmd[256];
 	trace_debug("begin ssid=%s",ssid);
@@ -213,7 +213,7 @@ int WiFiClass::begin(char* ssid, uint8_t key_idx, const char *key)
 	/*
 	iwconfig [interface] mode managed key [WEP key] 
 	(128 bit WEP use 26 hex characters, 64 bit WEP uses 10) 
-	/
+	*/
 	if(ssid == NULL)
 		return WL_NO_SSID_AVAIL;
 	if(key == NULL)
@@ -262,7 +262,7 @@ int WiFiClass::begin(char* ssid, const char *passphrase)
 	sprintf(cmd, "ifconfig %s up", ARDUINO_WLAN);
 	system(cmd);
 	retval = -1;
-	/* Clear out current networks, and create a new one using ssid and key /
+	/* Clear out current networks, and create a new one using ssid and key */
 	while (retval != 0)
 	{
 		sprintf(cmd, "wpa_cli remove_network `wpa_cli list_networks | tail -1 | cut -b 1-3`");
@@ -300,9 +300,9 @@ int WiFiClass::begin(char* ssid, const char *passphrase)
 	strcpy(_ssid, ssid);
 	_status = WL_CONNECTED;
 	return _status;
-}*/
+}
 
-/*void WiFiClass::config(IPAddress local_ip)
+void WiFiClass::config(IPAddress local_ip)
 {
 	_local_ip = local_ip;
 	trace_debug("config local ip %3d.%3d.%3d.%3d",
@@ -387,9 +387,9 @@ void WiFiClass::config(IPAddress local_ip, IPAddress dns_server,
 		(_subnet._sin.sin_addr.s_addr&0x0000FF00)>>8,
 		(_subnet._sin.sin_addr.s_addr&0x00FF0000)>>16,
 		(_subnet._sin.sin_addr.s_addr&0xFF000000)>>24);
-}*/
+}
 
-/*void WiFiClass::setDNS(IPAddress dns_server)
+void WiFiClass::setDNS(IPAddress dns_server)
 {
 	_dns_server = dns_server;
 
@@ -416,9 +416,9 @@ void WiFiClass::setDNS(IPAddress dns_server1, IPAddress dns_server2)
 		(_dns_server2._sin.sin_addr.s_addr&0x0000FF00)>>8,
 		(_dns_server2._sin.sin_addr.s_addr&0x00FF0000)>>16,
 		(_dns_server2._sin.sin_addr.s_addr&0xFF000000)>>24	);
-}*/
+}
 
-/*int WiFiClass::disconnect()
+int WiFiClass::disconnect()
 {
 	char cmd[50];
 	trace_debug("disconnect");
@@ -433,9 +433,9 @@ void WiFiClass::setDNS(IPAddress dns_server1, IPAddress dns_server2)
 		trace_error("not connected to AP");
 		return WL_DISCONNECTED;
 	}
-}*/
+}
 
-/*uint8_t* WiFiClass::macAddress(uint8_t* mac)
+uint8_t* WiFiClass::macAddress(uint8_t* mac)
 {
 	FILE *fp = NULL;
 	char cmd[128];
@@ -447,16 +447,16 @@ void WiFiClass::setDNS(IPAddress dns_server1, IPAddress dns_server2)
 		trace_error("can't open handle to %s", TMP_PATH);
 		return NULL;
 	}
-	fscanf(fp, "%s", cmd); /* Ethernet /
-	fscanf(fp, "%s", cmd); /* HWaddr /
-	fscanf(fp, "%s", cmd); /* XX:XX:XX:XX:XX:XX /
+	fscanf(fp, "%s", cmd); /* Ethernet */
+	fscanf(fp, "%s", cmd); /* HWaddr */
+	fscanf(fp, "%s", cmd); /* XX:XX:XX:XX:XX:XX */
 	fclose(fp);
 	trace_debug("my mac=%s", cmd);
 	//sscanf(cmd, "%x:%x:%x:%x:%x:%x", &mac[0], &mac[1], 
 	sscanf(cmd, "%hhx:%hhx:%hhx:%hhx:%hhx:%hhx", &mac[0], &mac[1],
 			&mac[2], &mac[3], &mac[4], &mac[5]);
 	return mac;
-}*/
+}
 
 IPAddress WiFiClass::localIP()
 {
@@ -503,9 +503,9 @@ char* WiFiClass::SSID()
 	return _ssid;
 }
 
-/*uint8_t* WiFiClass::BSSID(uint8_t* bssid)
+uint8_t* WiFiClass::BSSID(uint8_t* bssid)
 {
-	/* TODO API not clear - are we ok returning ptr we get in /
+	/* TODO API not clear - are we ok returning ptr we get in */
 	trace_debug("BSSID");
 	if (_status == WL_CONNECTED) {
 		FILE *fp = NULL;
@@ -530,9 +530,9 @@ char* WiFiClass::SSID()
 		trace_error("%s not connected", ARDUINO_WLAN);
 		return NULL;
 	}
-}*/
+}
 
-/*int32_t WiFiClass::RSSI()
+int32_t WiFiClass::RSSI()
 {
 	trace_debug("RSSI");
 	if (_status == WL_CONNECTED) {
@@ -553,13 +553,13 @@ char* WiFiClass::SSID()
 		trace_error("%s not connected", ARDUINO_WLAN);
 		return 0;
 	}
-}*/
+}
 
-/*uint8_t WiFiClass::encryptionType()
+uint8_t WiFiClass::encryptionType()
 {
 	int count;
 	if (_status == WL_CONNECTED) {
-		/* no easy way to do this apart from scanning again /
+		/* no easy way to do this apart from scanning again */
 		trace_debug("doing scan to get encryption");
 		count = scanNetworks();
 		return getEncrBySsid(count, _ssid);
@@ -567,9 +567,9 @@ char* WiFiClass::SSID()
 		trace_error("%s not connected", ARDUINO_WLAN);
 		return 0;
 	}
-}*/
+}
 
-/*int8_t WiFiClass::scanNetworks()
+int8_t WiFiClass::scanNetworks()
 {
 	FILE *fp = NULL;
 	char cmd[1024];
@@ -608,7 +608,7 @@ char* WiFiClass::SSID()
 #endif
 	fclose(fp);
 	return count;
-}*/
+}
 
 char* WiFiClass::SSID(uint8_t networkItem)
 {
@@ -659,11 +659,3 @@ int WiFiClass::hostByName(const char* aHostname, IPAddress& aResult)
 }
 
 WiFiClass WiFi;
-
-/*	int main()
-	{
-	    WiFiClass();
-
-	    return 0;
-	 }
-*/

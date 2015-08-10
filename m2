@@ -3,13 +3,18 @@
 IDIR =/home/jorge/Downloads/arduino-1.5.3-Intel.1.0.4/hardware/arduino
 IDIR2 =/home/jorge/Downloads/arduino-1.5.3-Intel.1.0.4/hardware/tools/sysroots/i586-poky-linux-uclibc/usr/include/sys
 CFLAGS=-I$(IDIR)
+CC=g++
+CC2=arm-linux-gnueabihf-g++
 
+#ScanLM: main.cpp
+#			$(CC2) -o prueba main.cpp $(CFLAGS)/edison/cores/arduino/ $(CFLAGS)/x86/variants/galileo_fab_g/ $(CFLAGS)/edison/libraries/SPI/ -I.
 
-#ScanLM: WiFi.cpp
-#			arm-linux-gnueabihf-g++ -o prueba main.cpp $(CFLAGS)/edison/cores/arduino/ $(CFLAGS)/x86/variants/galileo_fab_g/ 
+##########Para generar .o
+ScanLM: main.cpp
+			$(CC) -c WiFi.cpp WiFiUdp.cpp main.cpp -Wformat-extra-args $(IDIR)/edison/libraries/SPI/SPI.cpp $(CFLAGS)/edison/cores/arduino/ $(CFLAGS)/edison/variants/edison_fab_b $(CFLAGS)/edison/libraries/SPI/ -I.
 
-ScanLM: WiFi.cpp
-			g++ -c WiFi.cpp main.cpp $(IDIR)/edison/cores/arduino/Arduino.cpp $(CFLAGS)/edison/cores/arduino/ $(CFLAGS)/edison/variants/edison_fab_b $(CFLAGS)/edison/libraries/SPI/ -I.  
+#ScanO: WiFi.o WiFiUdp.o SPI.o main.o		
+#		     $(CC) -o WiFi.o WiFiUdp.o SPI.o main.o $(CFLAGS)/edison/cores/arduino/ -I. 
 
 #‘--trace’
 #
